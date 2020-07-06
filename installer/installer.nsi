@@ -178,6 +178,7 @@ Function uninstallOldVersion
 			Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHESIMPLEX).lnk"
 			Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHEPHONETIC).lnk"
 			Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHEEZ).lnk"
+			Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHECORNER).lnk"
             ; Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_BRAILLE_CHEWING).lnk"
 			Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(UNINSTALL_PIME).lnk"
 			RMDir "$SMPROGRAMS\$(PRODUCT_NAME)"
@@ -434,6 +435,14 @@ SectionGroup /e $(PYTHON_SECTION_GROUP) python_section_group
 			StrCpy $INST_CINBASE "True"
 		SectionEnd
 
+		Section $(CHECORNER) checorner
+			SectionIn 2
+			SetOutPath "$INSTDIR\python\input_methods"
+			File /r "..\python\input_methods\checorner"
+			StrCpy $INST_PYTHON "True"
+			StrCpy $INST_CINBASE "True"
+		SectionEnd
+
 		Section $(CHEENG) cheeng
 			${If} ${AtLeastWin8}
 				SectionIn 2
@@ -600,6 +609,10 @@ Section "" Register
 		CreateShortCut "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHEEZ).lnk" "$INSTDIR\python\python3\pythonw.exe" '"$INSTDIR\python\cinbase\configtool.py" config cheez' "$INSTDIR\python\input_methods\cheez\icon.ico" 0
 	${EndIf}
 
+	${If} ${SectionIsSelected} ${checorner}
+		CreateShortCut "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHECORNER).lnk" "$INSTDIR\python\python3\pythonw.exe" '"$INSTDIR\python\cinbase\configtool.py" config checorner' "$INSTDIR\python\input_methods\checorner\icon.ico" 0
+	${EndIf}
+
 	CreateShortCut "$SMPROGRAMS\$(PRODUCT_NAME)\$(UNINSTALL_PIME).lnk" "$INSTDIR\Uninstall.exe"
 SectionEnd
 
@@ -621,6 +634,7 @@ SectionEnd
 	!insertmacro MUI_DESCRIPTION_TEXT ${chesimplex} $(chesimplex_DESC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${chephonetic} $(chephonetic_DESC)
     !insertmacro MUI_DESCRIPTION_TEXT ${cheez} $(cheez_DESC)
+    !insertmacro MUI_DESCRIPTION_TEXT ${checorner} $(checorner_DESC)
     !insertmacro MUI_DESCRIPTION_TEXT ${rime} $(rime_DESC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${emojime} $(emojime_DESC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${cheeng} $(cheeng_DESC)
@@ -662,6 +676,7 @@ Section "Uninstall"
 	Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHESIMPLEX).lnk"
 	Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHEPHONETIC).lnk"
     Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHEEZ).lnk"
+    Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_CHECORNER).lnk"
 	; Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(SET_BRAILLE_CHEWING).lnk"
 	Delete "$SMPROGRAMS\$(PRODUCT_NAME)\$(UNINSTALL_PIME).lnk"
 	RMDir "$SMPROGRAMS\$(PRODUCT_NAME)"

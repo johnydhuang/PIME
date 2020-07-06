@@ -39,6 +39,7 @@
 !insertmacro LANG_STRING CHESIMPLEX "Quick"
 !insertmacro LANG_STRING CHEPHONETIC "Phonetic"
 !insertmacro LANG_STRING CHEEZ "EZ Input"
+!insertmacro LANG_STRING CHECORNER "3Corner"
 !insertmacro LANG_STRING RIME "Rime"
 !insertmacro LANG_STRING EMOJIME "emojime"
 !insertmacro LANG_STRING CHEENG "Eng-Num"
@@ -63,6 +64,7 @@
 !insertmacro LANG_STRING chesimplex_DESC "Install Quick input method module."
 !insertmacro LANG_STRING chephonetic_DESC "Install Phonetic input method module."
 !insertmacro LANG_STRING cheez_DESC "Install EZ Input method module."
+!insertmacro LANG_STRING checorner_DESC "Install 3Corner Input method module."
 !insertmacro LANG_STRING rime_DESC "Install Rime input method engine, 内含拼音、注音、仓颉、五笔、粤拼、吴语等数种输入方案。"
 !insertmacro LANG_STRING emojime_DESC "Install emojime input method module."
 !insertmacro LANG_STRING cheeng_DESC "Install Eng-Num input method module."
@@ -79,6 +81,7 @@
 !insertmacro LANG_STRING SET_CHESIMPLEX "Setup Quick input method"
 !insertmacro LANG_STRING SET_CHEPHONETIC "Setup Phonetic input method"
 !insertmacro LANG_STRING SET_CHEEZ "Setup EZ Input method"
+!insertmacro LANG_STRING SET_CHECORNER "Setup 3Corner Input method"
 !insertmacro LANG_STRING SET_BRAILLE_CHEWING "Setup Braille Chewing input method"
 
 !insertmacro LANG_STRING UNINSTALL_PIME "Uninstall PIME"
