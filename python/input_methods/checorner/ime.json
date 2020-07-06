@@ -1,0 +1,14 @@
+{
+    "name":"三角碼輸入法 (PIME)",
+    "version": "1.00",
+    "guid": "{A4A13AD8-666D-4D6B-80BA-8E47AD6E29FD}",
+    "locale": "zh-Hant-TW",
+    "fallbackLocale": "zh-TW",
+    "icon": "icon.ico",
+    "win8_icon": "",
+    "moduleName": "checorner_ime",
+    "serviceName": "CheCornerTextService",
+    "configTool": "..\\..\\python3\\pythonw.exe",
+    "configToolParams": "configtool.py config checorner",
+    "configToolDir": "..\\..\\cinbase"
+}

@@ -143,6 +143,7 @@ class ConfigHandler(BaseHandler):
         CinDict["chearray"] = ["tharray.json", "array30.json", "ar30-big.json", "array40.json"]
         CinDict["chedayi"] = ["thdayi.json", "dayi4.json", "dayi3.json"]
         CinDict["cheez"] = ["ez.json", "ezsmall.json", "ezmid.json", "ezbig.json"]
+        CinDict["checorner"] = ["3corner.json"]
         CinDict["chepinyin"] = ["thpinyin.json", "pinyin.json", "roman.json"]
         CinDict["chesimplex"] = ["simplecj.json", "simplex.json", "simplex5.json"]
         CinDict["cheliu"] = ["liu.json"]

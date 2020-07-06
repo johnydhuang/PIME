@@ -46,7 +46,7 @@ CHINESE_MODE = 1
 ENGLISH_MODE = 0
 FULLSHAPE_MODE = 1
 HALFSHAPE_MODE = 0
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 # shift + space 熱鍵的 GUID
 SHIFT_SPACE_GUID = "{f1dae0fb-8091-44a7-8a0c-3082a1515447}"
@@ -3335,7 +3335,7 @@ class LoadRCinTable(threading.Thread):
                                 "ez.json", "ezsmall.json", "ezmid.json", "ezbig.json",
                                 "thpinyin.json", "pinyin.json", "roman.json",
                                 "simplecj.json", "simplex.json", "simplex5.json",
-                                "liu.json"
+                                "liu.json", "3corner.json"
                             ])
 
     def run(self):
