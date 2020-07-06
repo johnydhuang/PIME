@@ -363,7 +363,11 @@ class CinBase:
             if keyEvent.keyCode >= VK_NUMPAD0 and keyEvent.keyCode <= VK_DIVIDE:
                 if cbTS.isShowMessage:
                     cbTS.hideMessageOnKeyUp = True
-                return False # bypass IME
+                if cbTS.imeDirName == "checorner":
+                    if cbTS.langMode == ENGLISH_MODE:
+                        return False
+                else:
+                    return False # bypass IME
 
         # 不管中英文模式，只要是全形可見字元或空白，輸入法都需要進一步處理(半形轉為全形)
         if cbTS.shapeMode == FULLSHAPE_MODE:
@@ -434,7 +438,7 @@ class CinBase:
         # NumPad 某些狀況允許輸入法處理
         if keyEvent.isKeyToggled(VK_NUMLOCK): # NumLock is on
             # if this key is Num pad 0-9, +, -, *, /, pass it back to the system
-            if keyEvent.keyCode >= VK_NUMPAD0 and keyEvent.keyCode <= VK_DIVIDE:
+            if keyEvent.keyCode >= VK_NUMPAD0 and keyEvent.keyCode <= VK_DIVIDE and not cbTS.imeDirName == "checorner":
                 if not cbTS.compositionBufferMode or cbTS.showCandidates:
                     return True # bypass IME
 
