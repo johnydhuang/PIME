@@ -55,7 +55,6 @@ class CheCornerTextService(TextService):
         self.cindir = self.cfg.getCinDir()
         self.ignorePrivateUseArea = self.cfg.ignorePrivateUseArea
         self.cinbase.initCinBaseContext(self)
-        self.autoClearCompositionChar = True
 
         # 載入輸入法碼表
         if not CinTable.curCinType == self.cfg.selCinType and not CinTable.loading:

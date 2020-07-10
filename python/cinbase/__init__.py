@@ -1703,7 +1703,7 @@ class CinBase:
                                     cbTS.canUseSelKey = True
 
                         # 字滿及符號處理 (大易、注音、輕鬆)
-                        if cbTS.autoShowCandWhenMaxChar or cbTS.dayisymbolsmode or cbTS.imeDirName == "checorner":
+                        if cbTS.autoShowCandWhenMaxChar or cbTS.dayisymbolsmode:
                             if len(cbTS.compositionChar) == cbTS.maxCharLength or cbTS.dayisymbolsmode:
                                 if not cbTS.isShowCandidates:
                                     if cbTS.imeDirName == "checorner":
