@@ -1703,10 +1703,22 @@ class CinBase:
                                     cbTS.canUseSelKey = True
 
                         # 字滿及符號處理 (大易、注音、輕鬆)
-                        if cbTS.autoShowCandWhenMaxChar or cbTS.dayisymbolsmode:
+                        if cbTS.autoShowCandWhenMaxChar or cbTS.dayisymbolsmode or cbTS.imeDirName == "checorner":
                             if len(cbTS.compositionChar) == cbTS.maxCharLength or cbTS.dayisymbolsmode:
                                 if not cbTS.isShowCandidates:
-                                    if cbTS.compositionBufferMode:
+                                    if cbTS.imeDirName == "checorner":
+                                        commitStr = candidates[0]
+                                        cbTS.lastCommitString = commitStr
+
+                                        self.setOutputString(cbTS, RCinTable, commitStr)
+                                        if cbTS.showPhrase and not cbTS.selcandmode:
+                                            cbTS.phrasemode = True
+                                        self.resetComposition(cbTS)
+                                        candCursor = 0
+                                        currentCandPage = 0
+                                        cbTS.canSetCommitString = True
+                                        cbTS.isShowCandidates = False
+                                    elif cbTS.compositionBufferMode:
                                         if cbTS.dayisymbolsmode and not len(cbTS.compositionChar) == 1:
                                             commitStr = candidates[0]
                                             cbTS.lastCommitString = commitStr
@@ -2041,6 +2053,20 @@ class CinBase:
                                 self.resetComposition(cbTS)
                             if cbTS.playSoundWhenNonCand:
                                 winsound.PlaySound('alert', winsound.SND_ASYNC)
+                elif cbTS.imeDirName == "checorner":
+                    if len(candidates) == 0 and len(cbTS.compositionChar) == cbTS.maxCharLength :
+                        if not cbTS.client.isUiLess:
+                                cbTS.isShowMessage = True
+                                cbTS.showMessage("查無組字...", cbTS.messageDurationTime)
+                        if cbTS.autoClearCompositionChar:
+                            if cbTS.compositionBufferMode:
+                                RemoveStringLength = 0
+                                if not cbTS.compositionChar == '':
+                                    RemoveStringLength = self.calcRemoveStringLength(cbTS)
+                                self.removeCompositionBufferString(cbTS, RemoveStringLength, True)
+                            self.resetComposition(cbTS)
+                        if cbTS.playSoundWhenNonCand:
+                            winsound.PlaySound('alert', winsound.SND_ASYNC)
 
                 cbTS.setShowCandidates(False)
                 cbTS.isShowCandidates = False
