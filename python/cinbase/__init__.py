@@ -366,6 +366,8 @@ class CinBase:
                 if cbTS.imeDirName == "checorner":
                     if cbTS.langMode == ENGLISH_MODE:
                         return False
+                    else:
+                        return True
                 else:
                     return False # bypass IME
 
@@ -389,6 +391,10 @@ class CinBase:
 
 
         # --------------   以下皆為中文模式   --------------
+        if cbTS.imeDirName == "checorner":
+            if self.isNumberChar(charCode):
+                return False
+
         if cbTS.imeDirName == "chepinyin":
             if len(cbTS.compositionChar) == 0 and charStr in cbTS.endKeyList:
                 return False
@@ -1099,6 +1105,15 @@ class CinBase:
 
         # 按下的鍵為 CIN 內有定義的字根
         if cbTS.cin.isInKeyName(charStrLow) and cbTS.closemenu and not cbTS.multifunctionmode and not keyEvent.isKeyDown(VK_CONTROL) and not cbTS.ctrlsymbolsmode and not cbTS.dayisymbolsmode and not cbTS.selcandmode and not cbTS.tempEnglishMode and not cbTS.phrasemode:
+            if charStr == '.' and cbTS.supportWildcard and cbTS.selWildcardChar == charStr: 
+                keyname = '.'
+                if cbTS.compositionBufferMode:
+                    if (len(cbTS.compositionChar) < cbTS.maxCharLength):
+                        cbTS.compositionChar += '.'
+                        self.setCompositionBufferString(cbTS, keyname, 0)
+                else:
+                    cbTS.compositionChar += '.'
+                    cbTS.setCompositionString(cbTS.compositionString + keyname)
             # 若按下 Shift 鍵
             if keyEvent.isKeyDown(VK_SHIFT) and cbTS.langMode == CHINESE_MODE and not cbTS.imeDirName == "cheez":
                 CommitStr = charStr
@@ -1274,6 +1289,15 @@ class CinBase:
                                 cbTS.menusymbolsmode = False
         # 按下的鍵不存在於 CIN 所定義的字根
         elif not cbTS.cin.isInKeyName(charStrLow) and cbTS.closemenu and not cbTS.multifunctionmode and not keyEvent.isKeyDown(VK_CONTROL) and not cbTS.ctrlsymbolsmode and not cbTS.dayisymbolsmode and not cbTS.selcandmode and not cbTS.tempEnglishMode and not cbTS.phrasemode:
+            if charStr == '.' and cbTS.supportWildcard and cbTS.selWildcardChar == charStr: 
+                keyname = '.'
+                if cbTS.compositionBufferMode:
+                    if (len(cbTS.compositionChar) < cbTS.maxCharLength):
+                        cbTS.compositionChar += '.'
+                        self.setCompositionBufferString(cbTS, keyname, 0)
+                else:
+                    cbTS.compositionChar += '.'
+                    cbTS.setCompositionString(cbTS.compositionString + keyname)
             # 若按下 Shift 鍵
             if keyEvent.isKeyDown(VK_SHIFT) and cbTS.langMode == CHINESE_MODE:
                 # 如果按鍵及萬用字元為*
@@ -1591,6 +1615,12 @@ class CinBase:
                         if cbTS.cin.isInCharDef(sellist[1]):
                             cbTS.compositionChar = sellist[1]
                             candidates = cbTS.cin.getCharDef(sellist[1])
+                            if cbTS.sortByPhrase and candidates:
+                                candidates = self.sortByPhrase(cbTS, copy.deepcopy(candidates))
+                            cbTS.selcandmode = True
+                        elif cbTS.supportWildcard and cbTS.selWildcardChar:
+                            cbTS.compositionChar = sellist[1]
+                            candidates = cbTS.cin.getWildcardCharDefs(cbTS.compositionChar, cbTS.selWildcardChar, cbTS.candMaxItems)
                             if cbTS.sortByPhrase and candidates:
                                 candidates = self.sortByPhrase(cbTS, copy.deepcopy(candidates))
                             cbTS.selcandmode = True
@@ -3159,6 +3189,9 @@ class CinBase:
             cbTS.selWildcardChar = 'z'
         elif cfg.selWildcardType == 1:
             cbTS.selWildcardChar = '*'
+
+        if cbTS.imeDirName == "checorner":
+            cbTS.selWildcardChar = '.'
 
         # 最大候選字個數?
         cbTS.candMaxItems = cfg.candMaxItems
