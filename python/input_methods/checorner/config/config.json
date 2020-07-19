@@ -27,7 +27,7 @@
     "candMaxItems": 100,
     "showPhrase": false,
     "sortByPhrase": true,
-    "compositionBufferMode": true,
+    "compositionBufferMode": false,
     "autoMoveCursorInBrackets": false,
     "imeReverseLookup": false,
     "userExtendTable": false,

@@ -191,6 +191,8 @@ class CinBase:
         cbTS.RCinFileNotExist = False
         cbTS.capsStates = True if self.getKeyState(VK_CAPITAL) else False
 
+        cbTS.cornerMax = False
+
         cbTS.bopomofolist = []
         for i in range(0x3105,0x311A):
             cbTS.bopomofolist.append(chr(i))
@@ -1103,6 +1105,12 @@ class CinBase:
                     cbTS.TextService.setSelKeys(cbTS, self.candselKeys)
                     cbTS.isSelKeysChanged = True
 
+        if cbTS.imeDirName == "checorner" and (keyEvent.isKeyDown(VK_RETURN) or keyEvent.isKeyDown(VK_SPACE)):
+            if len(cbTS.compositionChar) < cbTS.maxCharLength:
+                pad = cbTS.maxCharLength - len(cbTS.compositionChar)
+                padstring = '{:0{}}'.format(0,pad)
+                cbTS.compositionChar += padstring
+
         # 按下的鍵為 CIN 內有定義的字根
         if cbTS.cin.isInKeyName(charStrLow) and cbTS.closemenu and not cbTS.multifunctionmode and not keyEvent.isKeyDown(VK_CONTROL) and not cbTS.ctrlsymbolsmode and not cbTS.dayisymbolsmode and not cbTS.selcandmode and not cbTS.tempEnglishMode and not cbTS.phrasemode:
             if charStr == '.' and cbTS.supportWildcard and cbTS.selWildcardChar == charStr: 
@@ -1737,17 +1745,22 @@ class CinBase:
                             if len(cbTS.compositionChar) == cbTS.maxCharLength or cbTS.dayisymbolsmode:
                                 if not cbTS.isShowCandidates:
                                     if cbTS.imeDirName == "checorner":
-                                        commitStr = candidates[0]
-                                        cbTS.lastCommitString = commitStr
+                                        cbTS.cornerMax = True
+                                        if len(candidates) == 1:
+                                            commitStr = candidates[0]
+                                            cbTS.lastCommitString = commitStr
 
-                                        self.setOutputString(cbTS, RCinTable, commitStr)
-                                        if cbTS.showPhrase and not cbTS.selcandmode:
-                                            cbTS.phrasemode = True
-                                        self.resetComposition(cbTS)
-                                        candCursor = 0
-                                        currentCandPage = 0
-                                        cbTS.canSetCommitString = True
-                                        cbTS.isShowCandidates = False
+                                            self.setOutputString(cbTS, RCinTable, commitStr)
+                                            if cbTS.showPhrase and not cbTS.selcandmode:
+                                                cbTS.phrasemode = True
+                                            self.resetComposition(cbTS)
+                                            candCursor = 0
+                                            currentCandPage = 0
+                                            cbTS.canSetCommitString = True
+                                            cbTS.isShowCandidates = False
+                                        else:
+                                            cbTS.isShowCandidates = True
+                                            cbTS.canUseSelKey = False
                                     elif cbTS.compositionBufferMode:
                                         if cbTS.dayisymbolsmode and not len(cbTS.compositionChar) == 1:
                                             commitStr = candidates[0]
@@ -1881,7 +1894,9 @@ class CinBase:
                         candCursor = 0
                         currentCandPage = 0
 
-                if cbTS.isShowCandidates:
+                if cbTS.isShowCandidates and not cbTS.cornerMax:
+                    if cbTS.imeDirName == "checorner" and cbTS.cornerMax:
+                        cbTS.cornerMax = False
                     # 使用選字鍵執行項目或輸出候選字
                     if self.isInSelKeys(cbTS, charCode) and not keyEvent.isKeyDown(VK_SHIFT) and cbTS.canUseSelKey:
                         if not cbTS.homophoneselpinyinmode:
@@ -2100,6 +2115,9 @@ class CinBase:
 
                 cbTS.setShowCandidates(False)
                 cbTS.isShowCandidates = False
+
+        if cbTS.imeDirName == "checorner" and cbTS.cornerMax:
+            cbTS.cornerMax = False
 
         # 聯想字模式
         if PhraseData.phrase is None:
